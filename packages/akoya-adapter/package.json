@@ -34,7 +34,8 @@
     "test": "jest --no-coverage --watch --silent=false",
     "test:watch": "npx -y cross-env DEBUG_PRINT_LIMIT=50000 jest --no-coverage --watch",
     "rename:esm": "./scripts/rename-esm.sh",
-    "prepack": "npm run clean && npm run build"
+    "prepack": "npm run clean && npm run build",
+    "playwright:test": "playwright test"
   },
   "repository": {
     "type": "git",
