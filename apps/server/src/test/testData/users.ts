@@ -8,5 +8,5 @@ export const listUsersData = {
 };
 
 export const createCustomerData = {
-  id: "createdFinicityUserId",
+  id: "createdAkoyaUserId",
 };

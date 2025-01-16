@@ -1,5 +1,22 @@
 [
   {
+    "name": "Mikomo Bank",
+    "id": "5deb6fca-557e-4d45-b2f8-354351675ad4",
+    "keywords": ["mikomo", "akoya"],
+    "logo": "https://thewealthmosaic.s3.amazonaws.com/media/Logo_Akoya.png",
+    "url": "https://akoya.com/",
+    "is_test_bank": true,
+    "routing_numbers": [],
+    "akoya_sandbox": {
+      "id": "mikomo",
+      "supports_aggregation": true,
+      "supports_history": false,
+      "supports_identification": true,
+      "supports_oauth": false,
+      "supports_verification": true
+    }
+  },
+  {
     "name": "FinBank Profiles - A",
     "id": "2deb6fca-557e-4d45-b2f8-354351675ad4",
     "keywords": ["finbank", "finicity"],
@@ -7,7 +24,7 @@
     "url": "http://www.finbank.com",
     "is_test_bank": true,
     "routing_numbers": [],
-    "finicity": {
+    "finicity_sandox": {
       "id": "102105",
       "supports_aggregation": true,
       "supports_history": false,

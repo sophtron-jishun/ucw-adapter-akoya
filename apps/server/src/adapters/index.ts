@@ -23,7 +23,6 @@ import { decodeAuthToken, mapJobType } from "../utils";
 export async function instrumentation(context: Context, input: any) {
   const { user_id } = input;
   context.user_id = user_id;
-
   if (!user_id) {
     return false;
   }

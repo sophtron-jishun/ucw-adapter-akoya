@@ -35,7 +35,7 @@ export function mapCachedInstitution(
 ): InstitutionSearchResponseItem {
   const supportsOauth =
     ins?.mx?.supports_oauth || ins?.sophtron?.supports_oauth;
-  // || ins.finicity.supports_oauth || ins.akoya.supports_oauth
+  // || ins.akoya.supports_oauth || ins.akoya.supports_oauth
   return {
     guid: ins.id,
     name: ins.name,

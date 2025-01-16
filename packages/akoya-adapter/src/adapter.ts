@@ -1,33 +1,35 @@
-import * as logger from "../infra/logger";
-import AkoyaClient from "../aggregatorApiClients/akoya";
-import aggregatorCredentials from "../aggregatorCredentials";
-import { get, set } from "../services/storageClient/redis";
-import {
-  type Connection,
-  ConnectionStatus,
-  type CreateConnectionRequest,
-  type Credential,
-  type Institution,
-  type UpdateConnectionRequest,
-  type WidgetAdapter,
-} from "@repo/utils";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { v4: uuidv4 } = require("uuid");
+import type {
+  Connection,
+  CreateConnectionRequest,
+  Credential,
+  Institution, 
+  KeyValuePair,
+  UpdateConnectionRequest,
+  WidgetAdapter
+} from "./contract";
+import {ChallengeType, ConnectionStatus} from "./contract";
+import type { AdapterConfig, CacheClient, LogClient } from "./models";
+import AkoyaClient from './apiClient';
+import { v4 as uuidv4 } from 'uuid';
 
 export class AkoyaAdapter implements WidgetAdapter {
-  sandbox: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  apiClient: any;
-  token: string;
-  constructor(sandbox: boolean) {
-    this.token = "thisNeverWorked";
-    this.sandbox = sandbox;
-    this.apiClient = new AkoyaClient(
-      sandbox
-        ? aggregatorCredentials.akoyaSandbox
-        : aggregatorCredentials.akoyaProd,
-    );
+  sessionId: string;
+  aggregator: string;
+  apiClient: AkoyaClient;
+  cacheClient: CacheClient;
+  logger: LogClient;
+  envConfig: Record<string, string>;
+
+  constructor(args: AdapterConfig) {
+    const {sandbox, sessionId, dependencies} = args;
+    this.aggregator = sandbox ? "akoya_sandbox" : "akoya";
+    this.sessionId = sessionId || 'session';
+    this.cacheClient = dependencies?.cacheClient;
+    this.logger = dependencies?.logClient;
+    this.envConfig = dependencies?.envConfig;
+    this.apiClient = sandbox
+      ? new AkoyaClient(dependencies?.aggregatorCredentials.akoyaSandbox, this.logger, this.envConfig)
+      : new AkoyaClient(dependencies?.aggregatorCredentials.akoyaProd, this.logger, this.envConfig);
   }
 
   async GetInstitutionById(id: string): Promise<Institution> {
@@ -62,12 +64,14 @@ export class AkoyaAdapter implements WidgetAdapter {
 
   async CreateConnection(
     request: CreateConnectionRequest,
+    user_id: string
   ): Promise<Connection | undefined> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const request_id = `${this.token}${uuidv4().replaceAll("-", "")}`;
+    const request_id = `${this.sessionId}${uuidv4().replaceAll("-", "")}`;
     const obj = {
       id: request_id,
       is_oauth: true,
+      user_id,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       credentials: [] as any[],
       institution_code: request.institution_id,
@@ -77,31 +81,36 @@ export class AkoyaAdapter implements WidgetAdapter {
       ),
       aggregator: this.apiClient.apiConfig.aggregator,
       status: ConnectionStatus.PENDING,
+      raw_status: 'PENDING',
     };
-    await set(request_id, obj);
+    await this.cacheClient.set(request_id, obj);
     return obj;
   }
 
-  async DeleteConnection(id: string): Promise<void> {
-    await set(id, null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async DeleteConnection(id: string, user_id: string): Promise<void> {
+    await this.cacheClient.set(id, null);
 
     return undefined;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   async DeleteUser(aggregatorUserId: string): Promise<any> {
-    throw new Error("Not Implemented");
+    return null;
   }
 
   async UpdateConnection(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: UpdateConnectionRequest,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    user_id: string
   ): Promise<Connection> {
     return null;
   }
 
-  async GetConnectionById(connectionId: string): Promise<Connection> {
-    return await get(connectionId);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async GetConnectionById(connectionId: string, user_id: string): Promise<Connection> {
+    return await this.cacheClient.get(connectionId);
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -114,7 +123,7 @@ export class AkoyaAdapter implements WidgetAdapter {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     user_id?: string,
   ): Promise<Connection> {
-    return await get(connectionId);
+    return await this.cacheClient.get(connectionId);
   }
 
   async AnswerChallenge(
@@ -127,16 +136,19 @@ export class AkoyaAdapter implements WidgetAdapter {
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  async ResolveUserId(user_id: string) {
+  async ResolveUserId(user_id: string, 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    failIfNotFound: boolean = false
+  ) {
     return user_id;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static async HandleOauthResponse(request: any): Promise<Connection> {
+  async HandleOauthResponse(request: any): Promise<Connection> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { state: request_id, code } = request;
-    logger.info(`Received akoya oauth redirect response ${request_id}`);
-    const connection = await get(request_id);
+    this.logger.info(`Received akoya oauth redirect response ${request_id}`);
+    const connection = await this.cacheClient.get(request_id);
     if (!connection) {
       return null;
     }
@@ -148,7 +160,7 @@ export class AkoyaAdapter implements WidgetAdapter {
       connection.request_id = request_id;
     }
     // console.log(connection)
-    await set(request_id, connection);
+    await this.cacheClient.set(request_id, connection);
 
     return connection;
   }

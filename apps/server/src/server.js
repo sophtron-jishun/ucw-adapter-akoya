@@ -90,7 +90,7 @@ app.listen(config.PORT, () => {
   info(message);
 });
 
-// Ngrok is required for Finicity webhooks local and github testing
+// Ngrok is required for Akoya webhooks local and github testing
 if (["dev", "test"].includes(config.ENV)) {
   ngrok.listen(app).then(() => {
     config.WEBHOOK_HOST_URL = app.listener.url();

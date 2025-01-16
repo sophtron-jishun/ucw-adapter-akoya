@@ -1,10 +1,10 @@
 import { http, HttpResponse } from "msw";
 import config from "../config";
 import { accessTokenResponse } from "./testData/auth0";
-import { finicityInsitutionData } from "./testData/institution";
+import { akoyaInsitutionData } from "./testData/institution";
 import { createCustomerData } from "./testData/users";
 
-const FINICITY_BASE_PATH = "https://api.finicity.com";
+const FINICITY_BASE_PATH = "https://api.akoya.com";
 export const FINICITY_INSTITUTION_BY_ID_PATH = `${FINICITY_BASE_PATH}/institution/v2/institutions/:institutionId`;
 export const CREATE_CUSTOMER_PATH = `${FINICITY_BASE_PATH}/aggregation/v2/customers/testing`;
 export const FINICITY_AUTH_PATH = `${FINICITY_BASE_PATH}/aggregation/v2/partners/authentication`;
@@ -16,7 +16,7 @@ const handlers = [
     HttpResponse.json({ token: "testAuthToken" }),
   ),
   http.get(FINICITY_INSTITUTION_BY_ID_PATH, () =>
-    HttpResponse.json(finicityInsitutionData),
+    HttpResponse.json(akoyaInsitutionData),
   ),
   http.post(FINICITY_CONNECT_PATH, () =>
     HttpResponse.json({ link: FINICITY_CONNECT_LITE_URL }),

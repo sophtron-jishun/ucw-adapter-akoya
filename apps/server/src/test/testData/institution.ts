@@ -4,7 +4,7 @@ import {
 } from "../../test-adapter";
 import type { CachedInstitution } from "../../shared/contract";
 
-export const finicityInsitutionData = {
+export const akoyaInsitutionData = {
   institution: {
     id: "testId",
     name: "FinBank",
@@ -24,7 +24,7 @@ export const finicityInsitutionData = {
     urlLogonApp: "https://finbank.prod.fini.city/CCBankImageMFA/login.jsp",
     oauthEnabled: false,
     urlForgotPassword: "https://developer.mastercard.com/forgot-password",
-    urlOnlineRegistration: "https://www.finicity.com/signup/",
+    urlOnlineRegistration: "https://www.akoya.com/signup/",
     class: "testfi",
     specialText:
       "Please enter your FinBank Username and Password required for login.",
@@ -37,7 +37,7 @@ export const finicityInsitutionData = {
       addressLine2: "",
     },
     currency: "USD",
-    email: "finbank.ds5@finicity.com",
+    email: "finbank.ds5@akoya.com",
     status: "online",
     branding: {
       logo: "https://prod-carpintero-branding.s3.us-west-2.amazonaws.com/101732/logo.svg",

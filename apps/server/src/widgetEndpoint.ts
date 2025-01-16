@@ -45,7 +45,7 @@ function renderDefaultPage(req: Request, res: Response, html: string) {
 }
 
 export const widgetHandler = (req: Request, res: Response) => {
-  const schema = Joi.object({
+const schema = Joi.object({
     connection_id: Joi.string(),
     institution_id: Joi.string(),
     job_type: Joi.string()
@@ -56,7 +56,6 @@ export const widgetHandler = (req: Request, res: Response) => {
     user_id: Joi.string().required(),
     token: Joi.string(),
   }).and("connection_id", "aggregator");
-
   const { error } = schema.validate(req.query);
 
   if (error) {
