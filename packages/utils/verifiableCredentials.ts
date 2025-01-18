@@ -3,7 +3,10 @@ export const decodeVcData = (jwt: string) => {
   return JSON.parse(atob(data));
 };
 
-export const getDataFromVCJwt = (jwt: string) => {
+export const getDataFromVCJwt = (jwt: any) => {
+  if(typeof jwt !== 'string'){
+    return jwt;
+  }
   const decodedVcData = decodeVcData(jwt);
 
   return decodedVcData?.vc?.credentialSubject;

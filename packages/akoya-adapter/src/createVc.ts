@@ -3,12 +3,12 @@ import AkoyaClient from './apiClient';
 
 const createAkoyaGetVC = (sandbox: boolean, dependencies: VCDependencies) => {
   return async ({
-                  institutionId,
-                  type,
-                  userId,
-                  accountId
+    connectionId,
+    type,
+    userId,
+    accountId
                 }: {
-    institutionId: string
+    connectionId: string
     type: string
     userId: string
     accountId?: string
@@ -20,6 +20,7 @@ const createAkoyaGetVC = (sandbox: boolean, dependencies: VCDependencies) => {
       : aggregatorCredentials.akoyaProd;
     const vcClient =  new AkoyaClient(configuration, logClient, envConfig)
     let token = await vcClient.getIdToken(userId)
+    const institutionId = connectionId;
     switch(type){
       case 'identity':
         let customer = await vcClient.getCustomerInfo(institutionId, token.id_token);
@@ -28,8 +29,6 @@ const createAkoyaGetVC = (sandbox: boolean, dependencies: VCDependencies) => {
         let accounts = await vcClient.getAccountInfo(institutionId, [], token.id_token);
         return {credentialSubject: {accounts}};
       case 'transactions':
-        let allAccounts = await vcClient.getAccountInfo(institutionId, [], token.id_token);
-        let accountId = (Object.values(allAccounts[0])[0] as any).accountId;
         const transactions = await vcClient.getTransactions(institutionId, accountId, token.id_token);
         return {credentialSubject: {transactions}};
     }

@@ -14,11 +14,11 @@ const dependencies: VCDependencies = {
 describe("getVc", () => {
   const institutionId = "mikomo";
   const userId = "userId";
-  const accountId = "accountId";
+  const accountId = "839502593";
 
   it("gets accounts VC from Sandbox environment", async () => {
     const vc = await createAkoyaSandboxGetVC(dependencies)({
-      institutionId,
+      connectionId: institutionId,
       type: VCDataTypes.ACCOUNTS,
       userId
     });
@@ -67,7 +67,7 @@ describe("getVc", () => {
 
   it("gets identity VC from Sandbox environment", async () => {
     const vc = await createAkoyaSandboxGetVC(dependencies)({
-      institutionId,
+      connectionId: institutionId,
       accountId,
       type: VCDataTypes.IDENTITY,
       userId
@@ -144,7 +144,7 @@ describe("getVc", () => {
 
   it("gets transactions VC from Prod environment", async () => {
     const vc = await createAkoyaProdGetVC(dependencies)({
-      institutionId,
+      connectionId: institutionId,
       type: VCDataTypes.TRANSACTIONS,
       userId,
       accountId

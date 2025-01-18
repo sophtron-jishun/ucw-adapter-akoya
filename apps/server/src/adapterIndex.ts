@@ -68,7 +68,6 @@ export async function getVC({
 
   if (vcAdapter) {
     info("Getting vc from aggregator", aggregator);
-
     return vcAdapter({
       accountId,
       connectionId,
