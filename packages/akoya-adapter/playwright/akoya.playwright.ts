@@ -6,7 +6,7 @@ test("connects to mikomo bank with oAuth", async ({ page }) => {
   const userId = crypto.randomUUID();
 
   await page.goto(
-    `http://localhost:8080/widget?job_type=aggregate&user_id=${userId}`,
+    `https://localhost:8080/widget?job_type=aggregate&user_id=${userId}`,
   );
 
   await page.getByPlaceholder("Search").fill("Mikomo Bank");
@@ -42,6 +42,6 @@ test("connects to mikomo bank with oAuth", async ({ page }) => {
 
   const apiRequest = page.context().request;
   await apiRequest.delete(
-    `http://localhost:8080/api/aggregator/akoya_sandbox/user/${userId}`,
+    `https://localhost:8080/api/aggregator/akoya_sandbox/user/${userId}`,
   );
 });
