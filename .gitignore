@@ -47,7 +47,7 @@ cypress.env.json
 cypress/screenshots/
 cypress/videos/
 apps/server/cypress/screenshots
-/test-results/
+test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/

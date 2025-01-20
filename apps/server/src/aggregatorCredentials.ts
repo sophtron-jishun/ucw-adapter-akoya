@@ -2,9 +2,8 @@ import config from "./config";
 
 const aggregatorCredentials = {
   akoyaSandbox: {
-    partnerId: process.env.AkoyaPartnerId,
-    appKey: process.env.AkoyaAppKey || 'test-appKey',
-    secret: process.env.AkoyaSecret || 'test-app-secret',
+    clientId: config.AKOYA_CLIENT_ID || 'test-appKey',
+    secret: config.AKOYA_SECRET || 'test-app-secret',
     basePath: "https://sandbox-idp.ddp.akoya.com",
     productPath: "https://sandbox-idp.ddp.akoya.com",
     aggregator: "akoya_sandbox",
@@ -12,9 +11,8 @@ const aggregatorCredentials = {
     available: true
   },
   akoyaProd: {
-    partnerId: process.env.AkoyaPartnerIdProd,
-    appKey: process.env.AkoyaAppKeyProd || 'test-appKey',
-    secret: process.env.AkoyaSecretProd || 'test-app-secret',
+    clientId: config.AKOYA_CLIENT_ID_PROD || 'test-appKey',
+    secret: config.AKOYA_SECRET_PROD || 'test-app-secret',
     basePath: "https://idp.ddp.akoya.com",
     productPath: "https://idp.ddp.akoya.com",
     aggregator: "akoya",
