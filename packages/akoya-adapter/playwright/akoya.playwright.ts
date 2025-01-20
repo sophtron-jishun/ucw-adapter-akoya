@@ -20,12 +20,12 @@ test("connects to mikomo bank with oAuth", async ({ page }, testInfo) => {
 
   await page.getByPlaceholder("Search").fill("mikomo bank");
 
-  page.on('request', request => console.log('>>', request.method(), request.url()));
-  page.on('response', async (response) => {
-    const body = await response.body();
-    const bodyStr = body.byteLength > 1000 ? `body size: ${body.byteLength}` : body.toString();
-    console.log('<<', response.status(), response.url(), bodyStr)
-  });
+  // page.on('request', request => console.log('>>', request.method(), request.url()));
+  // page.on('response', async (response) => {
+  //   const body = await response.body();
+  //   const bodyStr = body.byteLength > 1000 ? `body size: ${body.byteLength}` : body.toString();
+  //   console.log('<<', response.status(), response.url(), bodyStr)
+  // });
 
   await page.getByLabel("Add account with Mikomo Bank").click();
   
