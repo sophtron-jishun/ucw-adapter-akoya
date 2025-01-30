@@ -22,8 +22,6 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "cypress:open": "cypress open --config-file cypress.config.js",
-    "cypress:run": "cypress run --config-file cypress.config.js",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run rename:esm",

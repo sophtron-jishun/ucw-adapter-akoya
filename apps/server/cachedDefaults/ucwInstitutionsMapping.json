@@ -7,7 +7,7 @@
     "url": "https://akoya.com/",
     "is_test_bank": true,
     "routing_numbers": [],
-    "akoya_sandbox": {
+    "akoya": {
       "id": "mikomo",
       "supports_aggregation": true,
       "supports_history": false,
@@ -24,7 +24,7 @@
     "url": "http://www.finbank.com",
     "is_test_bank": true,
     "routing_numbers": [],
-    "finicity_sandox": {
+    "finicity": {
       "id": "102105",
       "supports_aggregation": true,
       "supports_history": false,

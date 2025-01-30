@@ -1,33 +1,16 @@
 {
-  "defaultAggregator": "sophtron",
+  "defaultAggregator": "akoya_sandbox",
 
   "supportedAggregators": [
-    "mx_int",
     "akoya_sandbox",
-    "finicity_sandbox",
-    "finicity",
-    "akoya",
-    "mx",
-    "sophtron"
+    "akoya"
   ],
 
-  "defaultAggregatorVolume": {
-    "aggregator1": 70,
-    "aggregator2": 30
-  },
+  "defaultAggregatorVolume": { },
 
-  "institutionAggregatorVolumeMap": {
-    "institutionId1": {
-      "aggregator1": 33.33,
-      "aggregator2": 33.33,
-      "aggregator3": 33.34
-    },
-    "institutionId2": {
-      "aggregator1": 100
-    }
-  },
+  "institutionAggregatorVolumeMap": { },
 
-  "hiddenInstitutions": ["institutionId"],
+  "hiddenInstitutions": [],
 
-  "recommendedInstitutions": ["2deb6fca-557e-4d45-b2f8-354351675ad4", "5deb6fca-557e-4d45-b2f8-354351675ad4"]
+  "recommendedInstitutions": ["5deb6fca-557e-4d45-b2f8-354351675ad4"]
 }

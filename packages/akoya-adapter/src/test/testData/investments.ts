@@ -1,4 +1,4 @@
-export const investimentData = {
+export const investmentData = {
   "accounts": [
     {
       "investmentAccount": {

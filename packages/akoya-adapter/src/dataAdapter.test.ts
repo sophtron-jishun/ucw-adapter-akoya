@@ -1,9 +1,9 @@
 import 'dotenv/config'
+import { VCDataTypes } from "@repo/utils";
 import type { VCDependencies } from "./models";
 import { logClient } from "./test/utils/logClient";
 import { aggregatorCredentials } from "./adapter.test";
-import { VCDataTypes } from "./contract";
-import { createAkoyaSandboxGetVC, createAkoyaProdGetVC } from "./createVc";
+import { createAkoyaSandboxDataAdapter, createAkoyaProdDataAdapter } from "./dataAdapter";
 
 const dependencies: VCDependencies = {
   logClient,
@@ -11,19 +11,18 @@ const dependencies: VCDependencies = {
   envConfig: process.env
 };
 
-describe("getVc", () => {
+describe("getData", () => {
   const institutionId = "mikomo";
   const userId = "userId";
   const accountId = "839502593";
 
-  it("gets accounts VC from Sandbox environment", async () => {
-    const vc = await createAkoyaSandboxGetVC(dependencies)({
+  it("gets accounts Data from Sandbox environment", async () => {
+    const Data = await createAkoyaSandboxDataAdapter(dependencies)({
       connectionId: institutionId,
       type: VCDataTypes.ACCOUNTS,
       userId
     });
-    expect(vc).toEqual({
-      credentialSubject: {
+    expect(Data).toEqual({
         "accounts": [
           {
             "investmentAccount": {
@@ -61,19 +60,17 @@ describe("getVc", () => {
             }
           }
         ]
-      }
     });
   });
 
-  it("gets identity VC from Sandbox environment", async () => {
-    const vc = await createAkoyaSandboxGetVC(dependencies)({
+  it("gets identity Data from Sandbox environment", async () => {
+    const Data = await createAkoyaSandboxDataAdapter(dependencies)({
       connectionId: institutionId,
       accountId,
       type: VCDataTypes.IDENTITY,
       userId
     });
-    expect(vc).toEqual({
-        "credentialSubject": {
+    expect(Data).toEqual({
           customers: [
             {
               "customerId": "string",
@@ -138,19 +135,17 @@ describe("getVc", () => {
               ]
             }
           ]
-        },
     });
   });
 
-  it("gets transactions VC from Prod environment", async () => {
-    const vc = await createAkoyaProdGetVC(dependencies)({
+  it("gets transactions Data from Prod environment", async () => {
+    const Data = await createAkoyaProdDataAdapter(dependencies)({
       connectionId: institutionId,
       type: VCDataTypes.TRANSACTIONS,
       userId,
       accountId
     });
-    expect(vc).toEqual({
-      "credentialSubject":{
+    expect(Data).toEqual({
         "transactions": [
           {
             "depositTransaction": {
@@ -179,7 +174,6 @@ describe("getVc", () => {
             }
           }
         ],
-      },
     });
   });
 });

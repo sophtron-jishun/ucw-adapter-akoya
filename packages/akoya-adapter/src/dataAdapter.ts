@@ -1,7 +1,7 @@
 import type { VCDependencies } from "./models";
 import AkoyaClient from './apiClient';
 
-const createAkoyaGetVC = (sandbox: boolean, dependencies: VCDependencies) => {
+const createDataAdapter = (sandbox: boolean, dependencies: VCDependencies) => {
   return async ({
     connectionId,
     type,
@@ -24,16 +24,16 @@ const createAkoyaGetVC = (sandbox: boolean, dependencies: VCDependencies) => {
     switch(type){
       case 'identity':
         let customer = await vcClient.getCustomerInfo(institutionId, token.id_token);
-        return {credentialSubject: {customers: [customer]}};
+        return {customers: [customer]};
       case 'accounts':
         let accounts = await vcClient.getAccountInfo(institutionId, [], token.id_token);
-        return {credentialSubject: {accounts}};
+        return {accounts};
       case 'transactions':
         const transactions = await vcClient.getTransactions(institutionId, accountId, token.id_token);
-        return {credentialSubject: {transactions}};
+        return {transactions};
     }
   };
 };
 
-export const createAkoyaProdGetVC = (dependencies: VCDependencies) => createAkoyaGetVC(false, dependencies);
-export const createAkoyaSandboxGetVC = (dependencies: VCDependencies) => createAkoyaGetVC(true, dependencies);
+export const createAkoyaProdDataAdapter = (dependencies: VCDependencies) => createDataAdapter(false, dependencies);
+export const createAkoyaSandboxDataAdapter = (dependencies: VCDependencies) => createDataAdapter(true, dependencies);

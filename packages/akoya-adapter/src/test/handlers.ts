@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw'
 import { paymentData } from './testData/payments';
 import { accountsData } from "./testData/accounts";
 import { balanceData } from './testData/balances';
-import { investimentData } from './testData/investiments';
+import { investmentData } from './testData/investments';
 import { tokenData } from './testData/token';
 import { transactionData } from './testData/transactions';
 import { customerData } from './testData/customer';
@@ -42,7 +42,7 @@ const handlers = [
     const accountIds = url.searchParams.get('accountIds')
     switch(accountIds){
       case "accountId":
-        return HttpResponse.json(investimentData)
+        return HttpResponse.json(investmentData)
       case "nonExistingUserId":
       default:
         return HttpResponse.json({accounts: []});
